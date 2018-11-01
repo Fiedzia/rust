@@ -29,6 +29,7 @@ pub mod cleanup_post_borrowck;
 pub mod check_unsafety;
 pub mod simplify_branches;
 pub mod simplify;
+pub mod static_probe;
 pub mod erase_regions;
 pub mod no_landing_pads;
 pub mod rustc_peek;
@@ -259,6 +260,7 @@ fn optimized_mir<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, def_id: DefId) -> &'tcx 
         // used for checking matches
         &cleanup_post_borrowck::CleanFakeReadsAndBorrows,
         &simplify::SimplifyCfg::new("early-opt"),
+        &static_probe::StaticProbePlugin,
 
         // These next passes must be executed together
         &add_call_guards::CriticalCallEdges,
@@ -298,6 +300,7 @@ fn optimized_mir<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, def_id: DefId) -> &'tcx 
         &remove_noop_landing_pads::RemoveNoopLandingPads,
         &simplify::SimplifyCfg::new("final"),
         &simplify::SimplifyLocals,
+
 
         &add_call_guards::CriticalCallEdges,
         &dump_mir::Marker("PreCodegen"),

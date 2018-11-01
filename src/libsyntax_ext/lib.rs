@@ -51,6 +51,7 @@ mod format;
 mod format_foreign;
 mod global_asm;
 mod log_syntax;
+mod static_probe;
 mod trace_macros;
 mod test;
 mod test_case;
@@ -131,6 +132,7 @@ pub fn register_builtins(resolver: &mut dyn syntax::ext::base::Resolver,
         trace_macros: trace_macros::expand_trace_macros,
         compile_error: compile_error::expand_compile_error,
         assert: assert::expand_assert,
+        static_probe: static_probe::expand_static_probe,
     }
 
     register(Symbol::intern("test_case"), MultiModifier(Box::new(test_case::expand)));
